@@ -139,3 +139,42 @@ class TestAccountService(TestCase):
         """It should not Read an Account that is not found"""
         response = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_account(self):
+        """It should Update an Account"""
+        accounts = self._create_accounts(2)
+
+        response = self.client.put(
+            f"{BASE_URL}/{accounts[0].id}",
+            json=accounts[1].serialize(),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(accounts[1].name, data["name"])
+        self.assertEqual(accounts[1].email, data["email"])
+        self.assertEqual(accounts[1].address, data["address"])
+        self.assertEqual(accounts[1].phone_number, data["phone_number"])
+        self.assertEqual(accounts[1].date_joined.isoformat(), data["date_joined"])
+
+        response = self.client.get(f"{BASE_URL}/{accounts[0].id}", content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(accounts[1].name, data["name"])
+        self.assertEqual(accounts[1].email, data["email"])
+        self.assertEqual(accounts[1].address, data["address"])
+        self.assertEqual(accounts[1].phone_number, data["phone_number"])
+        self.assertEqual(accounts[1].date_joined.isoformat(), data["date_joined"])
+
+
+    def test_update_missing_account(self):
+        """It shouldn't Update an Account that is not found"""
+        account = self._create_accounts(1)[0]
+
+        response = self.client.put(
+            f"{BASE_URL}/0",
+            json=account.serialize(),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
