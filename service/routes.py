@@ -65,7 +65,7 @@ def list_accounts():
     List All Accounts
     This endpoint will list all accounts
     """
-    app.logger.info(f"Request to list all accounts")
+    app.logger.info("Request to list all accounts")
 
     accounts = Account.all()
     app.logger.info("Listing [%s] accounts", len(accounts))
@@ -92,7 +92,7 @@ def read_account(account_id):
 
     return account.serialize(), status.HTTP_200_OK
 
-    
+
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################

@@ -166,7 +166,6 @@ class TestAccountService(TestCase):
         self.assertEqual(accounts[1].phone_number, data["phone_number"])
         self.assertEqual(accounts[1].date_joined.isoformat(), data["date_joined"])
 
-
     def test_update_missing_account(self):
         """It shouldn't Update an Account that is not found"""
         account = self._create_accounts(1)[0]
@@ -200,7 +199,7 @@ class TestAccountService(TestCase):
 
     def test_list_accounts(self):
         """It should list all Accounts"""
-        accounts = self._create_accounts(10)
+        self._create_accounts(10)
         response = self.client.get(BASE_URL)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
