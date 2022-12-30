@@ -6,6 +6,7 @@ metadata:
     app: accounts
   name: accounts
 spec:
+  replicas: 3
   selector:
     matchLabels:
       app: accounts
@@ -37,5 +38,5 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: postgresql
-                key: database-user           
+                key: database-user
 status: {}
